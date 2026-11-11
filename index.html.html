@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070f26">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>সুপার ১০ - গেম সার্চ</title>
+<style>
+:root{--bg:#070f26;--bg2:#0d1b42;--card:#122253;--line:#243a78;--gold:#f6c744;--gold2:#ffdf7a;--txt:#eef2ff;--mut:#9db0de}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Nirmala UI","Noto Sans Bengali","Hind Siliguri",Arial,sans-serif;color:var(--txt);background:radial-gradient(1100px 500px at 50% -120px,#1a2f6e 0,transparent 70%),var(--bg);min-height:100vh}
+.top{text-align:center;padding:26px 16px 8px}
+.brand{display:inline-flex;align-items:center;gap:14px;text-align:left}
+.logo{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--gold2),#c8941a);color:#0b1a3a;font-weight:900;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(246,199,68,.35)}
+h1{margin:0;font-size:30px;letter-spacing:3px;font-weight:800}
+h1 em{font-style:normal;color:var(--gold)}
+.brand p{margin:2px 0 0;color:var(--mut);font-size:13px;letter-spacing:.5px}
+.wrap{max-width:1150px;margin:0 auto;padding:0 14px 30px}
+#admintools{display:none;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;background:#2a2208;border-bottom:1px solid #6b5514;padding:9px 12px;font-size:14px;color:var(--gold2)}
+.searchcard{position:sticky;top:0;z-index:20;background:linear-gradient(var(--bg) 70%,transparent);padding:12px 0 8px}
+.sb{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:0 14px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.sb:focus-within{border-color:var(--gold)}
+.sb input{flex:1;background:none;border:0;outline:0;color:var(--txt);font-size:17px;padding:15px 0;min-width:0;font-family:inherit}
+.sel{display:flex;gap:8px;margin-top:8px}
+select{flex:1;min-width:0;padding:11px 12px;font-size:14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--txt);outline:none;font-family:inherit}
+select:focus{border-color:var(--gold)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 0 10px;scrollbar-width:thin}
+.tab{flex:0 0 auto;padding:9px 15px;border-radius:24px;border:1px solid var(--line);background:var(--card);color:var(--txt);cursor:pointer;font-size:14px;white-space:nowrap;transition:.15s}
+.tab:hover{border-color:var(--gold)}
+.tab.on{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#0b1a3a;border-color:var(--gold);font-weight:700}
+.tab small{opacity:.7;margin-left:2px}
+.info{color:var(--mut);font-size:14px;margin:8px 2px 12px}
+.info a{color:var(--gold);text-decoration:none;font-weight:600;margin-left:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.g{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;position:relative;transition:.15s}
+.g[style]:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.g b{display:block;font-size:15px;margin-bottom:8px;word-break:break-word;font-weight:600}
+.g mark{background:var(--gold);color:#0b1a3a;border-radius:3px;padding:0 2px}
+.ic{display:block;font-size:26px;margin-bottom:6px}
+.ic.mono{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#1c3170;color:var(--gold);font-size:14px;font-weight:800;margin-bottom:9px}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:10px;margin-right:4px}
+.p{background:#223a78;color:#cfdcff}.c{background:#3a3114;color:var(--gold)}
+button{padding:10px 16px;border-radius:10px;border:0;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#0b1a3a;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+button.alt{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+#more{display:block;margin:22px auto}
+#setup,#editbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+#setup{display:none}
+#editbox{display:none;border:2px dashed var(--gold)}
+textarea{width:100%;height:150px;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px;font-family:inherit}
+#editbox textarea{height:230px;font-size:14px}
+input[type=text]{padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--txt);font-size:14px;font-family:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:50px 0}
+#notice{display:none;background:linear-gradient(90deg,#f6c744,#ffdf7a);color:#0b1a3a;text-align:center;font-weight:700;padding:10px 14px;font-size:15px}
+.gi{width:100%;height:110px;object-fit:cover;border-radius:8px;margin-bottom:9px;display:block;background:#fff}
+.lg{width:56px;height:56px;border-radius:10px;object-fit:contain;margin-bottom:9px;display:block;background:rgba(255,255,255,.1);padding:3px}
+.bdg{position:absolute;top:8px;right:8px;z-index:2;font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;background:#e63946;color:#fff}
+.bdg.new{background:#1fa66a}
+.ctl{margin-top:9px;display:flex;gap:5px;flex-wrap:wrap}
+.ctl span{cursor:pointer;font-size:11px;background:#1c3170;padding:4px 8px;border-radius:8px;border:1px solid var(--line)}
+.ctl span:hover{border-color:var(--gold)}
+.g.off{opacity:.45}
+#brandbox{display:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+#brandbox input[type=text]{flex:1;min-width:180px}
+#brandbox input[type=color]{width:46px;height:36px;border:0;background:none;padding:0}
+.logo img{width:100%;height:100%;object-fit:contain;border-radius:12px}
+.logo.has{background:none;box-shadow:none}
+.fil{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:2px 0 6px}
+#chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{cursor:pointer;font-size:13px;padding:6px 12px;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+.chip.on{border-color:var(--gold);color:var(--gold);font-weight:700}
+#sort{flex:0 0 auto;margin-left:auto;padding:7px 10px;font-size:13px}
+.fv{position:absolute;top:8px;left:8px;z-index:2;cursor:pointer;font-size:15px;background:rgba(7,15,38,.65);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+#sup{position:fixed;right:14px;bottom:16px;z-index:40;display:flex;flex-direction:column;gap:10px}
+#sup a{display:flex;align-items:center;gap:7px;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 16px;border-radius:30px;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+#sup a.wa{background:#1faa59}#sup a.tg{background:#2a9bd8}
+#up{position:fixed;left:14px;bottom:16px;z-index:40;width:42px;height:42px;border-radius:50%;padding:0;font-size:20px;display:none}
+footer div{margin:3px 0}
+#bannerbox,#sumbox{display:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+#slider{display:none;position:relative;border-radius:14px;overflow:hidden;margin:12px 0 4px;aspect-ratio:16/5;min-height:100px;background:#0d1b42}
+#slider .sl{position:absolute;inset:0;opacity:0;transition:opacity .6s;pointer-events:none}
+#slider .sl.on{opacity:1;pointer-events:auto}
+#slider img{width:100%;height:100%;object-fit:cover;display:block}
+#slider .dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:3}
+#slider .dots span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer}
+#slider .dots span.on{background:var(--gold)}
+.bl{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:10px}
+.bn img{width:100%;aspect-ratio:16/5;object-fit:cover;border-radius:8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:10px 0}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px;color:var(--gold)}
+.stat span{font-size:12px;color:var(--mut)}
+#admchip{border-color:var(--gold);color:var(--gold);font-weight:700}
+footer{text-align:center;color:#6f82b3;font-size:12px;padding:18px 12px 30px;border-top:1px solid #16275a;margin-top:10px}
+footer a{color:#6f82b3;cursor:pointer;margin-left:8px;text-decoration:underline}
+@media(max-width:560px){h1{font-size:24px}.grid{grid-template-columns:repeat(2,1fr);gap:9px}.g{padding:11px}.g b{font-size:14px}.sel{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="admintools">
+  <span>🔐 অ্যাডমিন মোড</span><span id="bkwarn"></span>
+  <button class="alt" onclick="toggleSetup()">ডেটা</button>
+  <button class="alt" id="editbtn" onclick="toggleEdit()">✏️ এডিট</button>
+  <button class="alt" id="undobtn" onclick="undoEdit()">↩ Undo (0)</button>
+  <button class="alt" onclick="bulkImages()">🖼 একসাথে ছবি</button>
+  <button class="alt" onclick="toggleBanner()">🏞 ব্যানার</button>
+  <button class="alt" onclick="toggleSummary()">📊 সারসংক্ষেপ</button>
+  <button class="alt" onclick="toggleBrand()">🎨 ব্র্যান্ড</button>
+  <button class="alt" onclick="editNotice()">📢 ঘোষণা</button>
+  <button class="alt" onclick="exportCSV()">📄 CSV</button>
+  <button class="alt" onclick="changePin()">🔑 পাসওয়ার্ড বদলান</button>
+  <button onclick="exportPlayer()">⬇ প্লেয়ার ভার্সন ডাউনলোড</button>
+  <button class="alt" onclick="adminLogout()">লগআউট</button>
+</div>
+<div id="notice"></div>
+<div class="top">
+  <div class="brand"><div class="logo" id="blogo">S10</div><div><h1 id="bname">SUPER <em>10</em></h1><p id="btag">গেম সার্চ পোর্টাল</p></div></div>
+</div>
+<div class="wrap">
+  <div id="slider"></div>
+  <div id="bannerbox"></div>
+  <div id="sumbox"></div>
+  <div id="setup">
+    <b>এক্সেল ডেটা দেওয়ার নিয়ম:</b> এক্সেল থেকে পুরো টেবিল (হেডার সহ) কপি করে নিচে পেস্ট করুন, তারপর "সেভ" চাপুন। অথবা .txt / .csv ফাইল সিলেক্ট করুন.
+    <textarea id="raw" placeholder="এখানে পেস্ট করুন (Ctrl+V)"></textarea>
+    <div class="row">
+      <button onclick="saveRaw()">সেভ</button>
+      <input type="file" id="file" accept=".txt,.csv,.tsv">
+      <button class="alt" onclick="clearData()">ডেটা মুছে দিন</button>
+    </div>
+    <div class="row"><b>এডিট ব্যাকআপ:</b> <button class="alt" onclick="backupEdits()">ব্যাকআপ ডাউনলোড</button> (রিস্টোর করতে ব্যাকআপ ফাইল সিলেক্ট করুন:) <input type="file" id="restoreFile" accept=".json"></div>
+  </div>
+  <div id="brandbox">
+    <b>🎨 ব্র্যান্ড সেটিংস</b>
+    <div class="row"><input type="text" id="bn" placeholder="সাইটের নাম (যেমন SUPER 10)"><input type="text" id="bt" placeholder="ট্যাগলাইন"></div>
+    <div class="row"><button class="alt" onclick="pickBrandLogo()">🖼 লোগো আপলোড</button><button class="alt" onclick="clearBrandLogo()">🗑 লোগো মুছুন</button><label>মূল রং:</label><input type="color" id="bc" value="#f6c744"></div>
+    <div class="row"><input type="text" id="bw" placeholder="হোয়াটসঅ্যাপ নম্বর (দেশের কোডসহ, শুধু সংখ্যা)"><input type="text" id="bg" placeholder="টেলিগ্রাম লিংক বা @ইউজারনেম"></div>
+    <div class="row"><button onclick="saveBrand()">সেভ</button></div>
+  </div>
+  <div class="searchcard">
+    <div class="sb"><span>🔍</span><input type="text" id="q" list="sg" placeholder="গেমের নাম সার্চ করুন... (যেমন: fortune, aviator, JILI)" autocomplete="off"></div>
+    <div class="sel"><select id="plat"></select><select id="prov"><option value="">সব প্রোভাইডার</option></select></div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="fil"><div id="chips"><span class="chip" data-f="new" onclick="setFilt('new')">🆕 নতুন</span><span class="chip" data-f="hot" onclick="setFilt('hot')">🔥 হট</span><span class="chip" data-f="fav" onclick="setFilt('fav')">❤️ পছন্দের</span></div><span class="chip" id="admchip" style="display:none" onclick="setFilt(FILT)"></span><select id="sort"><option value="">সাজানো: ডিফল্ট</option><option value="az">A → Z</option><option value="za">Z → A</option></select></div>
+  <div class="info" id="info"></div>
+  <div id="editbox"></div>
+  <div class="grid" id="grid"></div>
+  <button id="more" style="display:none" onclick="PAGE+=1;render(true)">আরও দেখুন</button>
+</div>
+<datalist id="sg"></datalist>
+<div id="sup"></div>
+<button id="up" onclick="scrollTo({top:0,behavior:'smooth'})" title="উপরে যান">↑</button>
+<footer><div id="upd"></div><div>🔞 ১৮ বছরের কম বয়সীদের জন্য নয়। দায়িত্বের সাথে খেলুন।</div><div>© <span id="fname">Super 10</span> · সর্বস্বত্ব সংরক্ষিত <a id="adminlink" onclick="adminLogin()">অ্যাডমিন</a></div></footer>
+<script>
+const SHELL='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+const BAKED=null;//BAKE
+const PLAYER=!!BAKED;
+let ADMIN=false;
+const ICON={"HOT GAMES":"🔥","SLOT GAMES":"🎰","CRASH GAMES":"🚀","Casino Games":"🃏","SPORTS GAMES":"⚽","ARCADE GAMES":"🎮","TABLE GAMES":"🎲","LOTTARY GAMES":"🎟️","FISHING GAMES":"🐟"};
+// ===== Chaile Notepad e ekhane data paste kore rakhte paren (backtick er majhe) =====
+const EMBEDDED = ``;
+// ====================================================================================
+
+const HOT_LIST=["Fortune Gems 500", "Lucky Tiger", "Jungle Bang Bang", "Super Ace", "HEYVIP Crash", "HEYVIP Super Elements", "Aviator", "Boxing King", "Super Ace Deluxe", "Match Odds", "Fortune Gems 2", "Money Coming", "Crazy Time", "Mega Ace", "Magic Ace Wild Lock", "Fortune Gems", "Fortune Gems 3", "Crazy777", "7Up 7Down", "Money Coming Exp...", "Wild Bounty Showdown", "Wild Ace", "Charge Buffalo", "Piggy Bank", "Magic Ace", "Money Rolling", "Lucky Ace", "777 game", "Crazy Money", "Royal Ace", "Rolling 7", "Golden Genie"];
+const BASE_PLATS=[["HOT GAMES","হট গেম"],["SLOT GAMES","স্লট"],["CRASH GAMES","ক্রাশ"],["Casino Games","ক্যাসিনো"],["SPORTS GAMES","স্পোর্ট"],["ARCADE GAMES","আর্কেড"],["TABLE GAMES","টেবিল"],["LOTTARY GAMES","লটারি"],["FISHING GAMES","ফিশিং"]];
+let PLATS=BASE_PLATS.slice();
+const lab=c=>{const p=PLATS.find(x=>x[0]===c);return p?p[1]:c;};
+const SLOT_PROVS=["JILI", "PG", "MONOPOLY", "FC", "PP", "JDB", "COMBO", "LETSGO", "MG", "YELLOWBAT", "FASTSPIN", "SG", "NEXTSPIN", "LUCKY365", "FIVEG", "RICH88", "GTF", "KM", "PT", "PLAY8", "REDTIGER", "DRAGOONSOFT", "BTG", "CG", "NLC", "OCTOPLAY", "RELAX", "YL", "CQ9", "INJOY", "JOKER", "KA", "MAHA", "NETENT", "WORLDMATCH", "HACKSAW", "ACEWIN", "YGGDRASIL", "MICROSLOT", "PLAYSTAR", "MIMI", "HABANERO"];
+const PALIAS={"P8":"PLAY8","RT":"REDTIGER","AWCV2_JILI":"JILI"};
+const CRASH_PROVS=["AVIATOR", "MG", "JILI", "JDB", "SMARTSOFT", "AVIATOR2", "KM", "PP", "YL", "FC", "CQ9", "KA", "RICH88", "JOKER", "RELAX", "LETSGO", "CRASH88"];
+const PROVS={"SLOT GAMES":SLOT_PROVS,"CRASH GAMES":CRASH_PROVS};
+const provList=set=>{const f=PROVS[CAT]||[];const hid=EDITS.hide[CAT]||[];const base=f.concat((EDITS.provs[CAT]||[]).filter(x=>!f.includes(x)));const L=base.concat([...set].filter(x=>!base.includes(x)).sort()).filter(x=>!hid.includes(x));const o=EDITS.order[CAT]||[];return o.filter(x=>L.includes(x)).concat(L.filter(x=>!o.includes(x)));};
+const FIXED={"SLOT GAMES|JDB": ["JDB Magic Ace Wild lock", "JDB Piggy BanK", "JDB Magic Ace", "JDB Lucky Seven", "JDB Dragon Soar", "JDB Fruity Bonanza", "JDB Fortune Jewel", "JDB Blossom of wealth", "JDB Billionaire", "JDB Kong", "JDB Trump Card", "JDB Dragons World", "JDB GoLaiFu", "JDB Fruity Bonanza combo", "JDB Super Niubi", "JDB CaiShen Coming", "JDB Big Three Dragons", "JDB Maya Gold Crazy", "JDB XiYangYang", "JDB Banana Saga", "JDB Beauty And the kingdom", "JDB Birds Party Deluxe", "JDB Birds Party", "JDB Book Of Mystery", "JDB Bull Treasure", "JDB CooCoo Fam", "JDB DoubleWilds", "JDB Dragon", "JDB Dragon Warrior", "JDB DragonsGate", "JDB Elemental Link fire", "JDB Elemental Link water", "JDB Fishin' Fever", "JDB Flirting Scholar Tang", "JDB Formosa Bear", "JDB Fortune Neko", "JDB Fortune Treasure", "JDB FortuneHorse", "JDB Four Treasures", "JDB FunkyKingkong", "JDB Glamorous Girl", "JDB GoldenDisco", "JDB Kingsman", "JDB Koi Trio", "JDB LantermWealth", "JDB Legendary5", "JDB Llama Adventure", "JDB Lucky Dragon", "JDB LuckyDiamond", "JDB Mahjong", "JDB MarvelousIV", "JDB MinerBabe", "JDB Mjolnir", "JDB Moneybags man", "JDB Moneybags man 2", "JDB Moonlight Treasure", "JDB Napoleon", "JDB New Year", "JDB Olympian Temple", "JDB Open Sesame", "JDB Open Sesame mega", "JDB OpenSesamell", "JDB OrientAnimals", "JDB Pop Pop Candy", "JDB Pop Pop Candy 1000", "JDB ProsperityTiger", "JDB Ragnarok Thor vs lok 1", "JDB Rooster In Love", "JDB Spindrift", "JDB Spindrift2", "JDB SuperNiubi Deluxe", "JDB TreasureBowl", "JDB TripleKingKong", "JDB Wealthway", "JDB Winning Mask", "JDB Winning Mask 11", "JDB WonderElephant", "JDB Wukong"]};
+const ADMIN_PIN="1234"; // <-- এডিট মোডের পিন, এখানে বদলে নিন
+let EDIT=false,LAST='',PLIST=[],EDITS={lists:{},provs:{},hide:{},images:{},off:{},badge:{},notice:'',order:{},brand:{},updated:'',banners:[],platforms:[],hidePlat:[],platNames:{}};
+try{const e=PLAYER?BAKED.edits:JSON.parse(localStorage.getItem('s10edits')||'null');if(e&&e.lists){EDITS=e;EDITS.provs=e.provs||{};EDITS.hide=e.hide||{};EDITS.images=e.images||{};EDITS.off=e.off||{};EDITS.badge=e.badge||{};EDITS.notice=e.notice||'';EDITS.order=e.order||{};EDITS.brand=e.brand||{};EDITS.updated=e.updated||'';EDITS.banners=e.banners||[];EDITS.platforms=e.platforms||[];EDITS.hidePlat=e.hidePlat||[];EDITS.platNames=e.platNames||{};}}catch(e){}
+let UNDO=[],INUNDO=false,LASTSNAP=JSON.stringify(EDITS);
+function updUndo(){const b=document.getElementById('undobtn');if(b)b.textContent='↩ Undo ('+UNDO.length+')';}
+function saveEdits(){
+  if(PLAYER)return;
+  {const t=new Date();EDITS.updated=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+  if(!INUNDO&&LASTSNAP){UNDO.push(LASTSNAP);if(UNDO.length>10)UNDO.shift();}
+  let js='';try{js=JSON.stringify(EDITS);localStorage.setItem('s10edits',js);}catch(e){alert('ব্রাউজারে জায়গা শেষ। কিছু ছবি মুছে দিন বা ছোট ছবি দিন।');}
+  LASTSNAP=js||JSON.stringify(EDITS);updUndo();
+}
+let DATA=[], CAT='', PAGE=1; const SIZE=120;
+const $=id=>document.getElementById(id);
+const clean=s=>(s||'').replace(/[\u00a0\u200b]/g,' ').replace(/\s+/g,' ').trim();
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function parse(text){
+  text=text.replace(/^\uFEFF/,'');
+  const lines=text.split(/\r?\n/);
+  const delim=text.indexOf('\t')>-1?'\t':',';
+  const rows=lines.map(l=>l.split(delim).map(clean));
+  let hi=rows.findIndex(r=>r.some(c=>/GAMES/i.test(c)));
+  if(hi<0)return[];
+  const head=rows[hi]; const cats=[]; let last='';
+  head.forEach((h,i)=>{ if(h && !/^sl/i.test(h)) last=h; cats[i]=(i===0||/^sl/i.test(h))?'':last; });
+  const body=rows.slice(hi+1);
+  // known provider prefixes
+  const pre={};
+  body.forEach(r=>r.forEach((c,i)=>{const p=c.split(' ');if(p.length>1){const k=p[0].toLowerCase();pre[k]=(pre[k]||0)+1}}));
+  const out=[],seen=new Set(), prov=[];
+  body.forEach(r=>r.forEach((c,i)=>{
+    if(i===0||!cats[i]||!c||/পৃষ্ঠার শেষ/.test(c))return;
+    const isHot=/HOT/i.test(cats[i]);
+    const single=c.indexOf(' ')<0;
+    if(!isHot&&single&&(/^[A-Z0-9_]{2,}$/.test(c)||(pre[c.toLowerCase()]>1))){prov[i]=c.toUpperCase();return;}
+    let p=isHot?'':(prov[i]||c.split(' ')[0].toUpperCase());
+    if(!isHot&&c.indexOf(' ')>0){p=prov[i]||c.split(' ')[0].toUpperCase();}
+    const key=cats[i]+'|'+p+'|'+c.toLowerCase();
+    if(seen.has(key))return; seen.add(key);
+    out.push({n:c,p:p,c:cats[i]});
+  }));
+  return out;
+}
+
+function load(text){
+  LAST=text;rebuildPlats();
+  DATA=parse(text).filter(d=>!/HOT/i.test(d.c)); DATA=HOT_LIST.map(n=>({n:n,p:'',c:'HOT GAMES'})).concat(DATA); DATA.forEach(d=>{const k=BASE_PLATS.find(p=>p[0].toUpperCase()===d.c.toUpperCase().replace(/\s+/g,' '));if(k)d.c=k[0];if(PALIAS[d.p])d.p=PALIAS[d.p];}); Object.keys(FIXED).forEach(k=>{const [c,p]=k.split('|');DATA=DATA.filter(d=>!(d.c===c&&d.p===p)).concat(FIXED[k].map(n=>({n:n,p:p,c:c})));}); DATA=DATA.filter(d=>!(EDITS.hidePlat||[]).includes(d.c)&&!((EDITS.hide[d.c]||[]).includes(d.p))); Object.keys(EDITS.lists).forEach(k=>{const [c,p]=k.split('|');if((EDITS.hidePlat||[]).includes(c))return;DATA=DATA.filter(d=>!(d.c===c&&d.p===p)).concat(EDITS.lists[k].map(n=>({n:n,p:p,c:c})));}); CAT=''; PAGE=1; buildTabs(); buildProv(); render();
+}
+function buildTabs(){
+  const cnt={}; DATA.filter(vis).forEach(d=>cnt[d.c]=(cnt[d.c]||0)+1);
+  let h=`<div class="tab ${CAT===''?'on':''}" onclick="setCat('')">সব <small>${DATA.filter(vis).length}</small></div>`;
+  PLATS.forEach(p=>{h+=`<div class="tab ${CAT===p[0]?'on':''}" onclick="setCat('${p[0]}')">${ICON[p[0]]} ${p[1]} <small>${cnt[p[0]]||0}</small></div>`});
+  if(EDIT){h+='<div class="tab" onclick="addPlat()">➕ প্ল্যাটফর্ম</div>';if((EDITS.hidePlat||[]).length)h+='<div class="tab" onclick="restorePlat()">♻ ফিরিয়ে আনুন ('+EDITS.hidePlat.length+')</div>';}
+  $('tabs').innerHTML=h;
+  $('plat').innerHTML='<option value="">সব প্ল্যাটফর্ম</option>'+PLATS.map(p=>`<option value="${p[0]}" ${CAT===p[0]?'selected':''}>${p[1]}</option>`).join('');
+}
+function buildProv(){
+  const set=new Set(); DATA.filter(d=>!CAT||d.c===CAT).forEach(d=>d.p&&set.add(d.p));
+  const cur=$('prov').value;
+  $('prov').innerHTML='<option value="">সব প্রোভাইডার</option>'+provList(set).map(p=>`<option ${p===cur?'selected':''}>${esc(p)}</option>`).join('');
+}
+function setCat(c){CAT=c;PAGE=1;$('prov').value='';buildTabs();buildProv();render();}
+function hl(name,q){
+  if(!q)return esc(name);
+  const i=name.toLowerCase().indexOf(q);
+  if(i<0)return esc(name);
+  return esc(name.slice(0,i))+'<mark>'+esc(name.slice(i,i+q.length))+'</mark>'+esc(name.slice(i+q.length));
+}
+function render(append){_render(append);paintEdit();paintNotice();applyBrand();paintSlider();paintBannerBox();paintSummary();paintAdmChip();}
+function _render(append){
+  if(!DATA.length){$('grid').innerHTML='<div class="empty">কোনো ডেটা নেই। উপরে "ডেটা" বাটন চেপে এক্সেলের লিস্ট পেস্ট করুন।</div>';$('info').textContent='';$('more').style.display='none';return;}
+  const q=clean($('q').value).toLowerCase(), pv=$('prov').value;
+  if(!q&&!pv&&!FILT){
+    const grp={}; 
+    if(!CAT){DATA.filter(vis).forEach(d=>grp[d.c]=(grp[d.c]||0)+1);
+      $('info').textContent='প্ল্যাটফর্ম সিলেক্ট করুন ('+PLATS.length+' টি প্ল্যাটফর্ম):';
+      $('grid').innerHTML=PLATS.map(p=>`<div class="g" style="cursor:pointer" onclick="setCat('${p[0]}')"><span class="ic">${ICON[p[0]]}</span><b>${p[1]}</b><span class="tag c">${grp[p[0]]||0} টি গেম</span></div>`).join('');
+      $('more').style.display='none';return;}
+    DATA.filter(d=>d.c===CAT&&d.p&&vis(d)).forEach(d=>grp[d.p]=(grp[d.p]||0)+1);
+    const ks=provList(new Set(Object.keys(grp)));
+    if(ks.length>1||(EDIT&&!isFlat(CAT))){
+      $('info').innerHTML=esc(lab(CAT))+' &rsaquo; '+ks.length+' টি প্রোভাইডার। প্রোভাইডার সিলেক্ট করুন:';
+      $('grid').innerHTML=(PLIST=ks).map((k,i)=>`<div class="g" style="cursor:pointer" onclick="pickProv('${k.replace(/'/g,"\\'")}')">${EDITS.images['P|'+CAT+'|'+k]?`<img class="lg" src="${EDITS.images['P|'+CAT+'|'+k]}" alt="">`:`<span class="ic mono">${esc(k.slice(0,2))}</span>`}<b>${esc(k)}</b><span class="tag p">${grp[k]||0} টি গেম</span>${EDIT?`<div class="ctl" onclick="event.stopPropagation()"><span onclick="moveProv(${i},0)">⬆ প্রথমে</span><span onclick="moveProv(${i},-1)">◀</span><span onclick="moveProv(${i},1)">▶</span><span onclick="pickLogo(${i})">🖼 ছবি</span>${EDITS.images['P|'+CAT+'|'+k]?`<span onclick="rmLogo(${i})">🗑 ছবি মুছুন</span>`:''}<span onclick="renameProv(${i})">✎ নাম</span><span onclick="delProv(${i})">✖ মুছুন</span></div>`:''}</div>`).join('');
+      $('more').style.display='none';return;}
+  }
+  const words=q.split(' ').filter(Boolean);
+  const res=DATA.filter(d=>vis(d)&&(!FILT||(FILT==='fav'?FAV.has(gk(d)):FILT==='noimg'?!EDITS.images[gk(d)]:FILT==='off'?!!EDITS.off[gk(d)]:EDITS.badge[gk(d)]===FILT))&&(!CAT||d.c===CAT)&&(!pv||d.p===pv)&&words.every(w=>(d.n+' '+d.p).toLowerCase().includes(w)));
+  if(SORT)res.sort((a,b)=>a.n.localeCompare(b.n,'en')*(SORT==='za'?-1:1));const show=res.slice(0,PAGE*SIZE);
+  $('info').innerHTML=(CAT?esc(lab(CAT))+(pv?' &rsaquo; '+esc(pv):'')+' &rsaquo; ':'')+res.length+' টি গেম পাওয়া গেছে '+(!q&&(CAT||pv)?'<a href="#" style="color:#f5c542" onclick="goBack();return false">&larr; পিছনে</a>':'');
+  $('grid').innerHTML=show.length?(RES=show).map((d,i)=>{const k=gk(d),im=EDITS.images[k],off=EDITS.off[k],bd=EDITS.badge[k];return `<div class="g${off?' off':''}">${bd?`<span class="bdg ${bd}">${bd==='new'?'🆕 নতুন':'🔥 হট'}</span>`:''}${im?`<img class="gi" src="${im}" alt="">`:''}<span class="fv" onclick="togFav(${i})">${FAV.has(k)?'❤️':'🤍'}</span><b>${hl(d.n,q)}</b>${d.p?`<span class="tag p">${esc(d.p)}</span>`:''}<span class="tag c">${esc(lab(d.c))}</span>${EDIT?`<div class="ctl"><span onclick="pickImg(${i})">🖼 ছবি</span>${im?`<span onclick="rmImg(${i})">🗑 ছবি মুছুন</span>`:''}<span onclick="cycBadge(${i})">🏷 ব্যাজ</span><span onclick="togOff(${i})">${off?'👁 চালু করুন':'🙈 বন্ধ করুন'}</span></div>`:''}</div>`}).join(''):`<div class="empty">${CAT&&!DATA.some(d=>d.c===CAT)?'এই প্ল্যাটফর্মের ডেটা এখনও দেওয়া হয়নি। "ডেটা" বাটন থেকে এক্সেলের লিস্ট পেস্ট করুন।':(pv&&!DATA.some(d=>d.c===CAT&&d.p===pv))?'এই প্রোভাইডারের গেম এখনও দেওয়া হয়নি। "ডেটা" বাটন থেকে এক্সেলের লিস্ট পেস্ট করুন।':'কিছু পাওয়া যায়নি। অন্য নাম দিয়ে চেষ্টা করুন।'}</div>`;
+  $('more').style.display=res.length>show.length?'block':'none';
+}
+function pickProv(p){$('prov').value=p;PAGE=1;render();}
+function goBack(){if($('prov').value){$('prov').value='';}else{CAT='';buildTabs();buildProv();}PAGE=1;render();}
+
+function refresh(pp){const c=CAT,p=pp!==undefined?pp:$('prov').value;load(LAST);CAT=c;buildTabs();buildProv();$('prov').value=p;$('editbox').dataset.key='';render();}
+function toggleEdit(){
+  if(!ADMIN)return;
+  EDIT=!EDIT;buildTabs();$('editbtn').textContent=EDIT?'✅ এডিট শেষ':'✏️ এডিট';$('editbox').dataset.key='';render();
+}
+function paintEdit(){
+  const b=$('editbox');
+  if(!EDIT){b.style.display='none';b.innerHTML='';return;}
+  b.style.display='block';
+  if(b.dataset.key==='__imp'&&$('imp')&&b.dataset.impcat===CAT&&!$('prov').value)return;
+  const pv=$('prov').value,hot=isFlat(CAT);
+  if(!CAT){b.dataset.key='';b.innerHTML='<b>এডিট মোড চালু।</b> উপর থেকে প্ল্যাটফর্ম সিলেক্ট করুন, তারপর প্রোভাইডারে ক্লিক করে গেম লিস্ট এডিট করুন।'+platBar(false);return;}
+  if(!pv&&!hot){b.dataset.key='';b.innerHTML='<b>'+esc(lab(CAT))+'</b> এ নতুন প্রোভাইডার যোগ করুন: <div class="row"><input type="text" id="np" placeholder="প্রোভাইডারের নাম (যেমন JILI)"><button onclick="addProv()">প্রোভাইডার যোগ করুন</button></div>'+impBtn()+platBar(true);return;}
+  const p=hot?'':pv,key=CAT+'|'+p;
+  if(b.dataset.key===key&&$('el'))return;
+  b.dataset.key=key;
+  const cur=DATA.filter(d=>d.c===CAT&&d.p===p).map(d=>d.n).join('\n');
+  b.innerHTML='<b>'+esc(lab(CAT))+(p?' › '+esc(p):'')+'</b> এর গেম লিস্ট। এক লাইনে একটি গেম। যোগ করা, বাদ দেওয়া বা নাম বদলানো সব এখানে করুন, তারপর সেভ চাপুন:<textarea id="el"></textarea><div class="row"><button onclick="saveList()">সেভ</button><button class="alt" onclick="resetList()">আগের লিস্টে ফিরে যান</button>'+(p?'<button class="alt" onclick="renameProv(-1)">প্রোভাইডারের নাম বদলান</button><button class="alt" onclick="delProv(-1)">প্রোভাইডার মুছে দিন</button>':'')+'</div>'+(p?'':platBar(true));
+  $('el').value=cur;
+}
+function saveList(){
+  const b=$('editbox'),seen=new Set(),lines=[];
+  $('el').value.split(/\n/).map(clean).filter(Boolean).forEach(n=>{const k=n.toLowerCase();if(!seen.has(k)){seen.add(k);lines.push(n);}});
+  EDITS.lists[b.dataset.key]=lines;saveEdits();refresh();
+}
+function resetList(){
+  if(!confirm('এই লিস্ট আগের (ডিফল্ট) অবস্থায় ফিরে যাবে। ঠিক আছে?'))return;
+  delete EDITS.lists[$('editbox').dataset.key];saveEdits();refresh();
+}
+function addProv(){
+  const n=clean($('np').value).toUpperCase();if(!n||!CAT)return;
+  const a=EDITS.provs[CAT]=EDITS.provs[CAT]||[];if(!a.includes(n))a.push(n);EDITS.hide[CAT]=(EDITS.hide[CAT]||[]).filter(x=>x!==n);saveEdits();refresh();
+}
+function backupEdits(){try{localStorage.setItem('s10lastbk',Date.now())}catch(e){}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(Object.assign({_pin:localStorage.getItem('s10pin')||''},EDITS))],{type:'application/json'}));a.download='super10-edits-backup.json';a.click();
+}
+$('restoreFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(o&&o.lists){EDITS=Object.assign({lists:{},provs:{},hide:{},images:{},off:{},badge:{},notice:'',order:{},brand:{},updated:'',banners:[],platforms:[],hidePlat:[],platNames:{}},o);if(o._pin){try{localStorage.setItem('s10pin',o._pin)}catch(x){}}delete EDITS._pin;saveEdits();refresh();alert('রিস্টোর হয়েছে');}}catch(x){alert('ফাইলটি ঠিক নয়');}};r.readAsText(f);};
+
+function provAt(i){return i>=0?PLIST[i]:$('prov').value;}
+function renameProv(i){
+  const old=provAt(i);if(!old||!CAT)return;
+  const n=clean(prompt('নতুন নাম লিখুন:',old)||'').toUpperCase();if(!n||n===old)return;
+  const cur=DATA.filter(d=>d.c===CAT&&d.p===old).map(d=>d.n);
+  EDITS.lists[CAT+'|'+n]=cur;{const o=EDITS.order[CAT];if(o){const t=o.indexOf(old);if(t>=0)o[t]=n;}}delete EDITS.lists[CAT+'|'+old];
+  const a=EDITS.provs[CAT]=EDITS.provs[CAT]||[];const k=a.indexOf(old);if(k>=0)a.splice(k,1);if(!a.includes(n))a.push(n);
+  const h=EDITS.hide[CAT]=EDITS.hide[CAT]||[];if(!h.includes(old))h.push(old);EDITS.hide[CAT]=h.filter(x=>x!==n);
+  saveEdits();refresh($('prov').value===old?n:undefined);
+}
+function delProv(i){
+  const old=provAt(i);if(!old||!CAT)return;
+  if(!confirm(old+' প্রোভাইডার ও তার সব গেম মুছে যাবে। ঠিক আছে?'))return;
+  const a=EDITS.provs[CAT]||[];const k=a.indexOf(old);if(k>=0)a.splice(k,1);
+  const h=EDITS.hide[CAT]=EDITS.hide[CAT]||[];if(!h.includes(old))h.push(old);
+  delete EDITS.lists[CAT+'|'+old];saveEdits();refresh('');
+}
+
+function adminLogin(){
+  if(PLAYER||ADMIN)return;
+  const pin=prompt('অ্যাডমিন পিন দিন:');
+  if(!okPin(pin)){if(pin!==null)alert('পিন ঠিক নয়');return;}
+  ADMIN=true;$('admintools').style.display='flex';bkCheck();$('adminlink').style.display='none';
+}
+function adminLogout(){
+  if(EDIT)toggleEdit();ADMIN=false;$('admintools').style.display='none';$('setup').style.display='none';$('brandbox').style.display='none';$('bannerbox').style.display='none';$('sumbox').style.display='none';$('adminlink').style.display='inline';
+}
+function exportPlayer(){
+  if(!ADMIN)return;
+  const MARK='const BAKED='+'null;//'+'BAKE';
+  const k=SHELL.indexOf(MARK);if(k<0){alert('ফাইল তৈরি করা যায়নি');return;}
+  const json=JSON.stringify({raw:LAST,edits:EDITS}).replace(/</g,'\\u003c');
+  const out=SHELL.slice(0,k)+'const BAKED='+json+';//'+'BAKE'+SHELL.slice(k+MARK.length);
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out],{type:'text/html'}));a.download='super10-player.html';a.click();
+}
+
+let RES=[];
+function gk(d){return d.c+'|'+d.p+'|'+d.n;}
+function vis(d){return EDIT||!EDITS.off[gk(d)];}
+function hsh(str){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677);}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return String(4294967296*(2097151&h2)+(h1>>>0));}
+function okPin(p){if(p===null||p===undefined)return false;let st='';try{st=localStorage.getItem('s10pin')||''}catch(e){}return st?hsh(p)===st:p===ADMIN_PIN;}
+function changePin(){
+  if(!ADMIN)return;
+  if(!okPin(prompt('বর্তমান পাসওয়ার্ড দিন:'))){alert('পাসওয়ার্ড ঠিক নয়');return;}
+  const a=prompt('নতুন পাসওয়ার্ড দিন (কমপক্ষে ৪ অক্ষর):');if(a===null)return;
+  if(a.length<4){alert('পাসওয়ার্ড ছোট হয়ে গেছে');return;}
+  if(prompt('নতুন পাসওয়ার্ড আবার লিখুন:')!==a){alert('দুটো মিলছে না');return;}
+  try{localStorage.setItem('s10pin',hsh(a));alert('পাসওয়ার্ড বদলেছে। এটা এই ব্রাউজারে সেভ থাকবে, তাই নতুন জায়গায় ব্যাকআপ রিস্টোর করুন।');}catch(e){alert('সেভ করা যায়নি');}
+}
+function shrink(file,max,cb,png){
+  const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);const x=c.getContext('2d');if(!png){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);}x.drawImage(im,0,0,c.width,c.height);cb(png?c.toDataURL('image/png'):c.toDataURL('image/jpeg',0.78));};im.onerror=()=>alert('ছবিটা পড়া যায়নি');im.src=r.result;};r.readAsDataURL(file);
+}
+function pickFile(max,done,png){const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=()=>{if(i.files[0])shrink(i.files[0],max,done,png);};i.click();}
+function pickImg(i){const d=RES[i];if(!d||!ADMIN)return;pickFile(240,u=>{EDITS.images[gk(d)]=u;saveEdits();render();});}
+function rmImg(i){const d=RES[i];if(!d||!ADMIN)return;delete EDITS.images[gk(d)];saveEdits();render();}
+function pickLogo(i){const p=PLIST[i];if(!p||!ADMIN)return;pickFile(120,u=>{EDITS.images['P|'+CAT+'|'+p]=u;saveEdits();render();},true);}
+function rmLogo(i){const p=PLIST[i];if(!p||!ADMIN)return;delete EDITS.images['P|'+CAT+'|'+p];saveEdits();render();}
+function moveProv(i,dir){
+  if(!ADMIN)return;const list=PLIST.slice(),p=list[i];if(!p)return;list.splice(i,1);
+  if(dir===0)list.unshift(p);else list.splice(Math.max(0,Math.min(list.length,i+dir)),0,p);
+  EDITS.order[CAT]=list;saveEdits();buildProv();render();
+}
+function cycBadge(i){const d=RES[i];if(!d||!ADMIN)return;const k=gk(d),c=EDITS.badge[k];if(!c)EDITS.badge[k]='new';else if(c==='new')EDITS.badge[k]='hot';else delete EDITS.badge[k];saveEdits();render();}
+function togOff(i){const d=RES[i];if(!d||!ADMIN)return;const k=gk(d);if(EDITS.off[k])delete EDITS.off[k];else EDITS.off[k]=1;saveEdits();buildTabs();render();}
+function paintNotice(){const n=$('notice');if(EDITS.notice){n.textContent='📢 '+EDITS.notice;n.style.display='block';}else{n.style.display='none';}}
+function editNotice(){if(!ADMIN)return;const t=prompt('উপরে দেখানোর ঘোষণা লিখুন (খালি রাখলে ঘোষণা মুছে যাবে):',EDITS.notice||'');if(t===null)return;EDITS.notice=clean(t);saveEdits();render();}
+function exportCSV(){
+  if(!ADMIN)return;
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const rows=[['প্ল্যাটফর্ম','প্রোভাইডার','গেম','অবস্থা'].map(q).join(',')].concat(DATA.map(d=>[lab(d.c),d.p,d.n,EDITS.off[gk(d)]?'বন্ধ':'চালু'].map(q).join(',')));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+rows.join('\r\n')],{type:'text/csv'}));a.download='super10-games.csv';a.click();
+}
+
+let FILT='',SORT='',FAV=new Set();
+try{FAV=new Set(JSON.parse(localStorage.getItem('s10fav')||'[]'))}catch(e){}
+function togFav(i){const d=RES[i];if(!d)return;const k=gk(d);if(FAV.has(k))FAV.delete(k);else FAV.add(k);try{localStorage.setItem('s10fav',JSON.stringify([...FAV]))}catch(e){}render();}
+function setFilt(f){FILT=FILT===f?'':f;PAGE=1;document.querySelectorAll('#chips .chip').forEach(c=>c.classList.toggle('on',c.dataset.f===FILT));render();}
+function suggest(){
+  const q=clean($('q').value).toLowerCase();if(q.length<2){$('sg').innerHTML='';return;}
+  const seen=new Set(),out=[];for(const d of DATA){if(!vis(d))continue;const n=d.n;if(n.toLowerCase().includes(q)&&!seen.has(n.toLowerCase())){seen.add(n.toLowerCase());out.push(n);if(out.length>=8)break;}}
+  $('sg').innerHTML=out.map(n=>'<option value="'+esc(n)+'">').join('');
+}
+function lighten(h){const n=parseInt(h.slice(1),16),m=v=>Math.round(v+(255-v)*.4);return '#'+[(n>>16)&255,(n>>8)&255,n&255].map(m).map(v=>v.toString(16).padStart(2,'0')).join('');}
+function applyBrand(){
+  const b=EDITS.brand||{},nm=b.name||'SUPER 10';
+  document.title=nm+' - গেম সার্চ';
+  const p=nm.split(' '),last=p.pop();$('bname').innerHTML=(p.length?esc(p.join(' '))+' ':'')+'<em>'+esc(last)+'</em>';
+  $('btag').textContent=b.tag||'গেম সার্চ পোর্টাল';
+  $('blogo').className='logo'+(b.logo?' has':'');$('blogo').innerHTML=b.logo?'<img src="'+b.logo+'" alt="">':'S10';
+  $('fname').textContent=nm;
+  const c=/^#[0-9a-f]{6}$/i.test(b.color||'')?b.color:'#f6c744';
+  document.documentElement.style.setProperty('--gold',c);document.documentElement.style.setProperty('--gold2',lighten(c));
+  let fv=document.getElementById('favicon');if(b.logo){if(!fv){fv=document.createElement('link');fv.id='favicon';fv.rel='icon';document.head.appendChild(fv);}fv.href=b.logo;}else if(fv)fv.remove();
+  let h='';if(b.wa)h+='<a class="wa" href="https://wa.me/'+b.wa+'" target="_blank" rel="noopener">💬 হোয়াটসঅ্যাপ</a>';
+  if(b.tg)h+='<a class="tg" href="'+esc(b.tg)+'" target="_blank" rel="noopener">✈️ টেলিগ্রাম</a>';
+  $('sup').innerHTML=h;
+  if(EDITS.updated){try{$('upd').textContent='শেষ আপডেট: '+new Date(EDITS.updated+'T00:00:00').toLocaleDateString('bn-BD',{day:'numeric',month:'long',year:'numeric'});}catch(e){$('upd').textContent='শেষ আপডেট: '+EDITS.updated;}}else $('upd').textContent='';
+}
+function toggleBrand(){
+  if(!ADMIN)return;const bx=$('brandbox');
+  if(bx.style.display==='block'){bx.style.display='none';return;}
+  const b=EDITS.brand||{};$('bn').value=b.name||'';$('bt').value=b.tag||'';$('bc').value=/^#[0-9a-f]{6}$/i.test(b.color||'')?b.color:'#f6c744';$('bw').value=b.wa||'';$('bg').value=b.tgRaw||'';bx.style.display='block';
+}
+function saveBrand(){
+  if(!ADMIN)return;const b=EDITS.brand=EDITS.brand||{};
+  b.name=clean($('bn').value);b.tag=clean($('bt').value);b.color=$('bc').value;b.wa=($('bw').value||'').replace(/\D/g,'');
+  const t=clean($('bg').value);b.tgRaw=t;b.tg=!t?'':/^https?:\/\//i.test(t)?t:'https://t.me/'+t.replace(/^@/,'');
+  saveEdits();render();alert('ব্র্যান্ড সেটিংস সেভ হয়েছে');
+}
+function pickBrandLogo(){if(!ADMIN)return;pickFile(160,u=>{(EDITS.brand=EDITS.brand||{}).logo=u;saveEdits();render();},true);}
+function clearBrandLogo(){if(!ADMIN)return;if(EDITS.brand)delete EDITS.brand.logo;saveEdits();render();}
+function bkCheck(){let t=0;try{t=+localStorage.getItem('s10lastbk')||0}catch(e){}const days=(Date.now()-t)/864e5;$('bkwarn').textContent=(!t||days>7)?'⚠ ব্যাকআপ নেওয়া নেই বা ৭ দিনের বেশি পুরনো: ডেটা → ব্যাকআপ ডাউনলোড করুন':'';}
+
+function undoEdit(){
+  if(!ADMIN)return;if(!UNDO.length){alert('ফেরানোর মতো কিছু নেই');return;}
+  const prev=UNDO.pop();INUNDO=true;
+  EDITS=Object.assign({lists:{},provs:{},hide:{},images:{},off:{},badge:{},notice:'',order:{},brand:{},updated:'',banners:[],platforms:[],hidePlat:[],platNames:{}},JSON.parse(prev));
+  saveEdits();INUNDO=false;refresh();
+}
+function nrm(s){return String(s).toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]/g,'');}
+function bulkImages(){
+  if(!ADMIN)return;const i=document.createElement('input');i.type='file';i.accept='image/*';i.multiple=true;
+  i.onchange=()=>{if(i.files.length)bulkProcess([...i.files]);};i.click();
+}
+async function bulkProcess(files){
+  const idx=new Map();
+  DATA.forEach(d=>{const ns=[nrm(d.n)];if(d.p){const st=d.n.replace(new RegExp('^\\s*'+d.p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s+','i'),'');ns.push(nrm(st));}
+    ns.forEach(n=>{if(!n)return;if(!idx.has(n))idx.set(n,[]);if(!idx.get(n).includes(d))idx.get(n).push(d);});});
+  let ok=0,games=0;const miss=[];
+  for(const f of files){
+    const base=f.name.replace(/\.[^.]+$/,''),m=idx.get(nrm(base));
+    if(!m){miss.push(base);continue;}
+    const u=await new Promise(r=>shrink(f,240,r));
+    m.forEach(d=>{EDITS.images[gk(d)]=u;});ok++;games+=m.length;
+  }
+  if(ok)saveEdits();render();
+  alert(ok+' টি ছবি '+games+' টি গেমে বসেছে।'+(miss.length?'\nমেলেনি ('+miss.length+'): '+miss.slice(0,12).join(', ')+(miss.length>12?' ...':''):''));
+}
+let SLI=0,SLSIG='',SLT=null;
+function paintSlider(){
+  const bn=EDITS.banners||[],el=$('slider'),sg=JSON.stringify(bn.map(b=>[b.link||'',b.img.length]));
+  if(!bn.length){el.style.display='none';el.innerHTML='';SLSIG='';clearInterval(SLT);return;}
+  if(sg===SLSIG)return;SLSIG=sg;el.style.display='block';
+  el.innerHTML=bn.map((b,i)=>{const im='<img src="'+b.img+'" alt="">';return '<div class="sl">'+(b.link?'<a href="'+esc(b.link)+'" target="_blank" rel="noopener">'+im+'</a>':im)+'</div>';}).join('')+(bn.length>1?'<div class="dots">'+bn.map((b,i)=>'<span onclick="goSlide('+i+')"></span>').join('')+'</div>':'');
+  goSlide(0);clearInterval(SLT);if(bn.length>1)SLT=setInterval(()=>goSlide((SLI+1)%bn.length),4500);
+}
+function goSlide(i){SLI=i;document.querySelectorAll('#slider .sl').forEach((x,k)=>x.classList.toggle('on',k===i));document.querySelectorAll('#slider .dots span').forEach((x,k)=>x.classList.toggle('on',k===i));}
+function toggleBanner(){if(!ADMIN)return;const b=$('bannerbox');if(b.style.display==='block'){b.style.display='none';return;}b.style.display='block';paintBannerBox();}
+function paintBannerBox(){
+  const b=$('bannerbox');if(b.style.display!=='block')return;const bn=EDITS.banners||[];
+  b.innerHTML='<b>🏞 ব্যানার (সর্বোচ্চ ৬টি)</b> <small style="color:var(--mut)">প্রস্তাবিত মাপ ১৬০০×৫০০ পিক্সেল</small><div class="bl">'+bn.map((x,i)=>'<div class="bn"><img src="'+x.img+'" alt=""><div class="ctl"><span onclick="bnLink('+i+')">🔗 '+(x.link?'লিংক বদলান':'লিংক দিন')+'</span><span onclick="bnMove('+i+',-1)">◀</span><span onclick="bnMove('+i+',1)">▶</span><span onclick="bnDel('+i+')">🗑 মুছুন</span></div></div>').join('')+'</div><div class="row"><button onclick="bnAdd()">➕ ব্যানার যোগ করুন</button></div>';
+}
+function bnAdd(){if(!ADMIN)return;if((EDITS.banners||[]).length>=6){alert('সর্বোচ্চ ৬টি ব্যানার দেওয়া যায়');return;}pickFile(1200,u=>{EDITS.banners.push({img:u,link:''});saveEdits();render();});}
+function bnLink(i){if(!ADMIN)return;const b=EDITS.banners[i];if(!b)return;const t=prompt('ব্যানারে ক্লিক করলে যে লিংক খুলবে (খালি রাখলে লিংক থাকবে না):',b.link||'');if(t===null)return;b.link=clean(t);saveEdits();render();}
+function bnMove(i,d){if(!ADMIN)return;const a=EDITS.banners,j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];saveEdits();render();}
+function bnDel(i){if(!ADMIN)return;EDITS.banners.splice(i,1);saveEdits();render();}
+function toggleSummary(){if(!ADMIN)return;const b=$('sumbox');if(b.style.display==='block'){b.style.display='none';return;}b.style.display='block';paintSummary();}
+function dupGroups(){const g={};DATA.forEach(d=>{const k=d.c+'|'+d.p+'|'+nrm(d.n);(g[k]=g[k]||[]).push(d);});return Object.keys(g).filter(k=>g[k].length>1).map(k=>g[k]);}
+function paintSummary(){
+  const b=$('sumbox');if(b.style.display!=='block')return;
+  const cnt=fn=>DATA.filter(fn).length,noimg=cnt(d=>!EDITS.images[gk(d)]),off=cnt(d=>EDITS.off[gk(d)]);
+  const pc={};DATA.forEach(d=>{if(d.p){const k=lab(d.c)+' › '+d.p;pc[k]=(pc[k]||0)+1;}});
+  const top=Object.entries(pc).sort((a,c)=>c[1]-a[1]).slice(0,5).map(x=>esc(x[0])+' ('+x[1]+')').join(' · ');
+  const per=PLATS.map(p=>lab(p[0])+': '+cnt(d=>d.c===p[0])).join(' · ');
+  const provN=new Set(DATA.filter(d=>d.p).map(d=>d.c+'|'+d.p)).size,dg=dupGroups();
+  const st=(n,t)=>'<div class="stat"><b>'+n+'</b><span>'+t+'</span></div>';
+  b.innerHTML='<b>📊 সারসংক্ষেপ</b><div class="stats">'+st(DATA.length,'মোট গেম')+st(provN,'প্রোভাইডার')+st(DATA.length-noimg,'ছবিসহ গেম')+st(off,'বন্ধ করা')+st(cnt(d=>EDITS.badge[gk(d)]==='new'),'🆕 নতুন')+st(cnt(d=>EDITS.badge[gk(d)]==='hot'),'🔥 হট')+'</div>'
+   +'<div style="font-size:13px;color:var(--mut);line-height:1.8">প্ল্যাটফর্ম: '+per+'<br>সবচেয়ে বেশি গেম: '+(top||'-')+'</div>'
+   +'<div class="row"><button class="alt" onclick="admFilt(\'noimg\')">ছবিছাড়া গেম দেখান ('+noimg+')</button><button class="alt" onclick="admFilt(\'off\')">বন্ধ করা গেম দেখান ('+off+')</button></div>'
+   +'<div style="margin-top:12px"><b>ডুপ্লিকেট গেম:</b> '+(dg.length?dg.length+' টি জায়গায় একই গেম একাধিকবার আছে'+'<div style="font-size:13px;color:var(--mut);margin:6px 0">'+dg.slice(0,10).map(g=>esc(lab(g[0].c)+(g[0].p?' › '+g[0].p:'')+': '+g.map(x=>x.n).join(' / '))).join('<br>')+(dg.length>10?'<br>...':'')+'</div><button onclick="removeDups()">সব ডুপ্লিকেট মুছুন (প্রথমটা থাকবে)</button>':'✅ কোনো ডুপ্লিকেট নেই')+'</div>';
+}
+function removeDups(){
+  if(!ADMIN)return;const done=new Set();
+  dupGroups().forEach(g=>{const c=g[0].c,p=g[0].p,key=c+'|'+p;if(done.has(key))return;done.add(key);
+    const seen=new Set(),list=[];DATA.filter(d=>d.c===c&&d.p===p).forEach(d=>{const k=nrm(d.n);if(!seen.has(k)){seen.add(k);list.push(d.n);}});EDITS.lists[key]=list;});
+  saveEdits();refresh();paintSummary();
+}
+function admFilt(f){
+  if(!ADMIN)return;if(!EDIT)toggleEdit();$('sumbox').style.display='none';CAT='';$('prov').value='';FILT=f;PAGE=1;
+  buildTabs();buildProv();document.querySelectorAll('#chips .chip').forEach(c=>c.classList.remove('on'));render();window.scrollTo&&scrollTo({top:0});
+}
+function paintAdmChip(){const c=$('admchip');if(FILT==='noimg'||FILT==='off'){c.style.display='inline-block';c.textContent=(FILT==='noimg'?'ফিল্টার: ছবিছাড়া গেম':'ফিল্টার: বন্ধ করা গেম')+' ✖';}else c.style.display='none';}
+
+function isFlat(c){return c==='HOT GAMES'||(EDITS.platforms||[]).some(p=>p.key===c&&p.flat);}
+function rebuildPlats(){
+  const hp=EDITS.hidePlat||[],nm=EDITS.platNames||{};
+  PLATS=BASE_PLATS.filter(p=>!hp.includes(p[0])).map(p=>[p[0],nm[p[0]]||p[1]]).concat((EDITS.platforms||[]).map(p=>[p.key,nm[p.key]||p.name]));
+  (EDITS.platforms||[]).forEach(p=>{ICON[p.key]=p.icon||'📁';});
+}
+function platBar(has){
+  if(has)return '<div class="row" style="margin-top:12px;border-top:1px solid var(--line);padding-top:10px"><button class="alt" onclick="renamePlat()">✎ প্ল্যাটফর্মের নাম বদলান</button><button class="alt" onclick="delPlat()">🗑 প্ল্যাটফর্ম মুছুন</button></div>';
+  return '<div class="row"><button onclick="addPlat()">➕ নতুন প্ল্যাটফর্ম যোগ করুন</button>'+((EDITS.hidePlat||[]).length?'<button class="alt" onclick="restorePlat()">♻ মুছে ফেলা প্ল্যাটফর্ম ফিরিয়ে আনুন</button>':'')+'</div>';
+}
+function addPlat(){
+  if(!ADMIN)return;
+  const name=clean(prompt('নতুন প্ল্যাটফর্মের নাম লিখুন:')||'');if(!name)return;
+  const icon=clean(prompt('একটি ইমোজি আইকন দিন (যেমন 🎯)। খালি রাখলে 📁 হবে:')||'')||'📁';
+  const flat=!confirm('এই প্ল্যাটফর্মে কি প্রোভাইডার থাকবে?\nOK = হ্যাঁ (প্রোভাইডার দিয়ে ভাগ হবে)\nCancel = না (সরাসরি গেমের লিস্ট)');
+  const key='plat_'+Date.now().toString(36);
+  (EDITS.platforms=EDITS.platforms||[]).push({key:key,name:name,icon:icon,flat:flat});
+  saveEdits();refresh();setCat(key);
+}
+function renamePlat(){
+  if(!ADMIN||!CAT)return;const n=clean(prompt('প্ল্যাটফর্মের নতুন নাম:',lab(CAT))||'');if(!n)return;
+  (EDITS.platNames=EDITS.platNames||{})[CAT]=n;saveEdits();rebuildPlats();buildTabs();render();
+}
+function delPlat(){
+  if(!ADMIN||!CAT)return;
+  if(!confirm('"'+lab(CAT)+'" প্ল্যাটফর্ম ও তার সব গেম মুছে যাবে। ঠিক আছে? (Undo দিয়ে ফেরানো যাবে)'))return;
+  const c=CAT,ix=(EDITS.platforms||[]).findIndex(p=>p.key===c);
+  if(ix>=0){
+    EDITS.platforms.splice(ix,1);
+    [EDITS.lists,EDITS.images,EDITS.off,EDITS.badge].forEach(o=>Object.keys(o).forEach(k=>{if(k.startsWith(c+'|')||k.startsWith('P|'+c+'|'))delete o[k];}));
+    delete EDITS.provs[c];delete EDITS.hide[c];delete EDITS.order[c];delete EDITS.platNames[c];
+  }else{(EDITS.hidePlat=EDITS.hidePlat||[]).push(c);}
+  CAT='';$('prov').value='';saveEdits();refresh('');
+}
+function restorePlat(){
+  const h=EDITS.hidePlat||[];if(!ADMIN||!h.length)return;
+  const names=h.map((k,i)=>(i+1)+') '+(BASE_PLATS.find(p=>p[0]===k)||[k,k])[1]);
+  const n=parseInt(prompt('কোনটি ফিরিয়ে আনবেন? নম্বর লিখুন:\n'+names.join('\n')),10);
+  if(!n||n<1||n>h.length)return;h.splice(n-1,1);saveEdits();refresh();
+}
+
+function impBtn(){return '<div class="row"><button class="alt" onclick="openImport()">📥 একসাথে ইমপোর্ট (প্রোভাইডারসহ)</button></div>';}
+function openImport(){
+  if(!ADMIN||!CAT)return;const b=$('editbox');b.dataset.key='__imp';b.dataset.impcat=CAT;
+  b.innerHTML='<b>📥 একসাথে ইমপোর্ট</b><div style="font-size:13px;color:var(--mut);margin:6px 0">প্রতিটি প্রোভাইডারের নাম <b># </b> দিয়ে শুরু করুন, তার নিচে এক লাইনে একটি করে গেম লিখুন। আগের গেম থাকলে সেগুলোর সঙ্গে যোগ হবে।<br>যেমন:<br># SPORTS<br>ALL GREYHOUND<br># FISHING<br>CQ9 - All Fish Games</div><textarea id="imp"></textarea><div class="row"><button onclick="doImport()">ইমপোর্ট করুন</button><button class="alt" onclick="cancelImport()">বাতিল</button></div>';
+}
+function cancelImport(){$('editbox').dataset.key='';render();}
+function doImport(){
+  if(!ADMIN||!CAT)return;
+  const map={},ord=[];let cur='';
+  $('imp').value.split(/\r?\n/).forEach(l=>{l=clean(l);if(!l)return;if(l[0]==='#'){cur=clean(l.replace(/^#+/,'')).toUpperCase();if(cur&&!map[cur]){map[cur]=[];ord.push(cur);}return;}if(cur)map[cur].push(l);});
+  if(!ord.length){alert('কোনো প্রোভাইডার পাওয়া যায়নি। প্রতিটি প্রোভাইডারের নাম # দিয়ে শুরু করুন।');return;}
+  let total=0;const pa=EDITS.provs[CAT]=EDITS.provs[CAT]||[],hd=EDITS.hide[CAT]=EDITS.hide[CAT]||[];
+  ord.forEach(p=>{
+    const seen=new Set(),list=[];
+    DATA.filter(d=>d.c===CAT&&d.p===p).map(d=>d.n).concat(map[p]).forEach(n=>{const k=n.toLowerCase();if(!seen.has(k)){seen.add(k);list.push(n);}});
+    EDITS.lists[CAT+'|'+p]=list;total+=map[p].length;
+    if(!(PROVS[CAT]||[]).includes(p)&&!pa.includes(p))pa.push(p);
+    EDITS.hide[CAT]=hd.filter(x=>x!==p);
+  });
+  saveEdits();refresh();alert(ord.length+' টি প্রোভাইডারে মোট '+total+' টি গেম যোগ হয়েছে।');
+}
+function toggleSetup(){if(!ADMIN)return;const s=$('setup');s.style.display=s.style.display==='block'?'none':'block';}
+function saveRaw(){
+  if(!ADMIN)return;const t=$('raw').value; if(!t.trim())return;
+  try{localStorage.setItem('s10games',t)}catch(e){}
+  load(t); $('setup').style.display='none';
+}
+function clearData(){if(!ADMIN)return;try{localStorage.removeItem('s10games')}catch(e){} $('raw').value=''; DATA=[]; buildTabs(); buildProv(); render();}
+$('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$('raw').value=r.result;saveRaw();};r.readAsText(f);};
+$('q').oninput=()=>{PAGE=1;suggest();render();};
+$('plat').onchange=()=>setCat($('plat').value);
+$('prov').onchange=()=>{PAGE=1;render();};
+
+let start=PLAYER?BAKED.raw:EMBEDDED;
+if(!PLAYER&&!start.trim()){try{start=localStorage.getItem('s10games')||''}catch(e){}}
+if(PLAYER)$('adminlink').style.display='none';
+load(start);
+$('sort').onchange=()=>{SORT=$('sort').value;PAGE=1;render();};
+window.addEventListener('scroll',()=>{$('up').style.display=window.scrollY>500?'block':'none';});
+</script>
+</body>
+</html>
